@@ -1,0 +1,11 @@
+streamlit
+anthropic
+openai-whisper
+google-auth-oauthlib
+google-api-python-client
+pyyaml
+python-docx
+twilio
+python-dotenv
+pyaudio
+requests

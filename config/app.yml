@@ -1,0 +1,5 @@
+app_name: MeetMind
+debug: false
+anthropic_model: claude-3-opus-20240229
+twilio_from_number: 
+google_credentials_file: 
