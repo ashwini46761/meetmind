@@ -39,66 +39,120 @@ meetmind/
 └── README.md              # This file
 ```
 
-## Setup
+## ⚡ Quick Start
 
-### 1. Create Virtual Environment
-
+### Windows Users
 ```bash
-python -m venv venv
-.\venv\Scripts\Activate.ps1  # On Windows
-source venv/bin/activate     # On Linux/Mac
+# Simply double-click:
+run.bat
 ```
 
-### 2. Install Dependencies
-
+### macOS/Linux Users
 ```bash
-python -m pip install --upgrade pip
-python -m pip install -r requirements.txt
+chmod +x run.sh
+./run.sh
 ```
 
-### 3. Configure Environment
+### Manual Setup
 
-Copy `.env.example` to `.env` and fill in your API keys. You may also set optional values in `config/app.yml` for defaults.
+1. **Create Virtual Environment**
+   ```bash
+   python -m venv venv
+   .\venv\Scripts\Activate.ps1  # On Windows
+   source venv/bin/activate     # On Linux/Mac
+   ```
 
-```bash
-cp .env.example .env
-```
+2. **Install Dependencies**
+   ```bash
+   python -m pip install --upgrade pip
+   python -m pip install -r requirements.txt
+   ```
 
-Required keys:
-- `ANTHROPIC_API_KEY` - Claude AI API key
+3. **Configure Environment**
+   ```bash
+   cp .env.example .env
+   # Edit .env with your API keys
+   ```
+
+4. **Run Application**
+   ```bash
+   streamlit run src/meetmind/app.py
+   ```
+
+Your app opens at: **http://localhost:8501**
+
+## 🌐 Deployment
+
+### Choose Your Method
+
+- **[Streamlit Cloud](DEPLOYMENT.md#-option-1-streamlit-cloud-recommended)** (Free, recommended)
+- **[Docker](DEPLOYMENT.md#-option-3-docker-production-ready)**
+- **[Heroku](DEPLOYMENT.md#-option-4-heroku-deployment)**
+- **[AWS App Runner](DEPLOYMENT.md#-option-6-aws-app-runner-recommended-for-aws)**
+- **[Google Cloud Run](DEPLOYMENT.md#-option-7-google-cloud-run)**
+
+**📖 Full deployment guide:** See [DEPLOYMENT.md](DEPLOYMENT.md)
+
+**📚 Detailed architecture guide:** See [STREAMLIT_DEPLOYMENT_GUIDE.md](STREAMLIT_DEPLOYMENT_GUIDE.md)
+
+## Configuration
+
+### Environment Variables
+Copy `.env.example` to `.env` and fill in your API keys:
+
+**Required:**
+- `ANTHROPIC_API_KEY` - Claude AI API key (get from https://console.anthropic.com)
 - `TWILIO_ACCOUNT_SID` - Twilio account SID
 - `TWILIO_AUTH_TOKEN` - Twilio auth token
 - `TWILIO_FROM_NUMBER` - Twilio sender phone number
 
-Optional keys:
-- `OPENAI_API_KEY` - OpenAI API key (for Whisper, if needed)
+**Optional:**
 - `GOOGLE_API_KEY` - Google API key
-- `GOOGLE_CREDENTIALS_FILE` - Path to Google OAuth or service account credentials
+- `APP_NAME` - Application name (default: MeetMind)
+- `LOG_LEVEL` - Logging level (default: INFO)
 
-### 4. Run Application
+## 🎯 Features & Usage
 
-```bash
-streamlit run src/run.py
-```
+### 1. 🎤 Speech to Text
+Convert meeting audio to text using OpenAI Whisper
+- Upload audio files (WAV, MP3, M4A, MP4, FLAC, AAC)
+- Automatic transcription
+- Copy or download results
 
-## Dependencies
+### 2. 🧠 AI Analysis
+Analyze meeting notes with Claude AI
+- Generate summaries
+- Extract action items
+- Identify key decisions
+- Suggest next steps
 
-See `requirements.txt` for complete list. Main dependencies:
-- streamlit - Web UI framework
-- anthropic - Claude AI API
-- openai-whisper - Speech-to-text
-- google-auth-oauthlib - Google authentication
-- python-docx - Document generation
-- twilio - SMS/communication service
-- pyaudio - Audio input/output
-- python-dotenv - Environment variable management
+### 3. 📄 Document Generation
+Create professional meeting minutes
+- Beautiful DOCX format
+- Customizable templates
+- Download directly
 
-## Usage
+### 4. 📱 Communication
+Send SMS reminders via Twilio
+- Quick reminder setup
+- Twilio integration
+- Message tracking
 
-1. Activate virtual environment
-2. Run: `streamlit run src/run.py`
-3. Open browser to http://localhost:8501
-4. Select mode from sidebar (Speech to Text, AI Analysis, etc.)
+## 📦 Dependencies
+
+Main packages:
+- **streamlit** - Web UI framework
+- **anthropic** - Claude AI API
+- **openai-whisper** - Speech-to-text
+- **twilio** - SMS service
+- **python-docx** - Document generation
+- **google-auth-oauthlib** - Google authentication
+- **pyaudio** - Audio input/output
+- **python-dotenv** - Environment variable management
+- **pyyaml** - Config file parsing
+- **requests** - HTTP library
+
+See [requirements.txt](requirements.txt) for complete list with versions.
 
 ## Development
 
@@ -113,16 +167,59 @@ See `requirements.txt` for complete list. Main dependencies:
 
 Application logs are saved to `logs/app.log`
 
-## Troubleshooting
+## 🔧 Troubleshooting
 
-- **PyAudio issues on Windows**: Use `pipwin install pyaudio` or Python 3.11/3.12
-- **Missing API keys**: Check `.env` file and ensure keys are set
-- **Import errors**: Verify all packages installed with `pip list`
+### Installation Issues
+| Issue | Solution |
+|-------|----------|
+| Disk space error | `pip install --no-cache-dir -r requirements.txt` |
+| PyAudio issues | Use Python 3.11+ or `pipwin install pyaudio` (Windows) |
+| Missing modules | Run `pip list` to verify, then `pip install -r requirements.txt` |
 
-## License
+### Runtime Issues
+| Issue | Solution |
+|-------|----------|
+| "API key not found" | Check `.env` file is in project root and correctly set |
+| Audio transcription fails | Verify Anthropic API key and file format |
+| SMS won't send | Check Twilio credentials and phone number format |
+| File uploads stuck | Check disk space and `maxUploadSize` in `.streamlit/config.toml` |
 
-MIT
+### Deployment Issues
+See **[DEPLOYMENT.md](DEPLOYMENT.md)** → Troubleshooting section
 
-## Author
+## 📚 Documentation
+
+| Document | Purpose |
+|----------|---------|
+| [DEPLOYMENT.md](DEPLOYMENT.md) | Deployment methods & quick reference |
+| [STREAMLIT_DEPLOYMENT_GUIDE.md](STREAMLIT_DEPLOYMENT_GUIDE.md) | Detailed architecture & UI/UX |
+| [TROUBLESHOOTING.md](#-troubleshooting) | Common issues & solutions |
+
+## 🔗 Useful Links
+
+- **Streamlit Docs**: https://docs.streamlit.io
+- **Anthropic API**: https://docs.anthropic.com
+- **Twilio Docs**: https://www.twilio.com/docs
+- **OpenAI Whisper**: https://openai.com/research/whisper
+- **Streamlit Cloud**: https://streamlit.io/cloud
+
+## 🤝 Contributing
+
+Contributions welcome! Please:
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Submit a pull request
+
+## 📄 License
+
+MIT License - see LICENSE file for details
+
+## 👥 Author
 
 MeetMind Team
+
+---
+
+**Last Updated**: April 29, 2026  
+**Version**: 1.0.0
