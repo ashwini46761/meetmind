@@ -57,14 +57,24 @@ class SpeechToText:
     def transcribe_audio(self, audio_file: str) -> Optional[str]:
         try:
             import whisper
-
+            
+            # Load the base model - more efficient for most use cases
             model = whisper.load_model("base")
-            result = model.transcribe(audio_file)
-            text = result.get("text") if isinstance(result, dict) else None
-            logger.info(f"Audio transcribed successfully: {audio_file}")
-            return text
+            
+            # Transcribe with language detection
+            result = model.transcribe(audio_file, language="en")
+            
+            # Extract transcribed text
+            if isinstance(result, dict) and "text" in result:
+                text = result.get("text", "").strip()
+                if text:
+                    logger.info(f"Audio transcribed successfully: {audio_file}")
+                    return text
+            
+            logger.error("No text extracted from Whisper result")
+            return None
         except ImportError:
-            logger.error("Whisper library not installed")
+            logger.error("Whisper library not installed - try 'pip install openai-whisper'")
             return None
         except Exception as exc:
             logger.error(f"Error transcribing audio: {exc}")
