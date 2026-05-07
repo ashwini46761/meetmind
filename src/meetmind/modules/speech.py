@@ -16,6 +16,11 @@ class SpeechToText:
         self.chunk_size = chunk_size
 
     def record_audio(self, duration: int, output_file: str) -> bool:
+        """
+        Record audio from microphone.
+        Note: This feature is only available in local deployments.
+        For Streamlit Cloud, please use file uploads instead.
+        """
         try:
             import pyaudio
             import wave
@@ -48,7 +53,7 @@ class SpeechToText:
             logger.info(f"Audio recorded successfully: {output_file}")
             return True
         except ImportError:
-            logger.error("PyAudio library not installed")
+            logger.warning("PyAudio not available. Please upload audio files instead or use local deployment.")
             return False
         except Exception as exc:
             logger.error(f"Error recording audio: {exc}")
